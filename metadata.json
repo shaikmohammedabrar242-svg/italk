@@ -1,0 +1,6 @@
+{
+  "name": "iTalk — Anonymous Community Discussion",
+  "description": "Speak freely, share real-life problems anonymously, and discover practical solutions from communities across India.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

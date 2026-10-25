@@ -1,0 +1,1078 @@
+# iTalk
+## Product Requirements Document (PRD)
+
+**Product:** iTalk  
+**Version:** 1.0 — MVP  
+**Product Type:** Anonymous Community Discussion Web Application  
+**Target Market:** India  
+**Development Platform:** Lovable  
+**Primary Objective:** Help Indians share problems anonymously, discuss real-life challenges, and discover practical solutions from their communities.
+
+---
+
+# 1. Product Vision
+
+## 1.1 Vision Statement
+
+Build a simple, trustworthy, community-driven platform where people across India can anonymously discuss problems affecting their cities, finances, jobs, consumer experiences, personal lives, and communities.
+
+iTalk should make it easy for people to speak up, find others facing similar challenges, exchange advice, and work toward solutions.
+
+The platform takes inspiration from Reddit's discussion feeds, voting, and community interactions but focuses on a simpler, problem-first experience designed for Indian users.
+
+## 1.2 Brand Promise
+
+**"Every problem deserves a voice."**
+
+Supporting message:
+
+"Speak freely. Find your people. Solve things together."
+
+## 1.3 The Problem
+
+People across India experience everyday problems but may struggle to find the right place to discuss them.
+
+Examples include:
+- Civic problems such as garbage collection, damaged roads, and water shortages.
+- Financial difficulties and money-related questions.
+- Unemployment and workplace challenges.
+- Consumer complaints involving products, services, and refunds.
+- Personal problems people feel uncomfortable discussing publicly.
+- Questions about government services and everyday life.
+
+iTalk provides one accessible place to discuss these problems and learn from other people's experiences.
+
+## 1.4 The Solution
+
+iTalk allows users to:
+
+1. Browse public problems without creating an account.
+2. Sign in using Google when they want to participate.
+3. Publish problems using an automatically generated anonymous username.
+4. Discover discussions by city and category.
+5. Comment with advice and practical suggestions.
+6. Upvote problems they find important.
+7. Share discussions through public links.
+8. Mark their own problems as resolved.
+9. Report harmful or inappropriate content.
+
+The experience must be fast, mobile-friendly, and straightforward.
+
+---
+
+# 2. Product Goals
+
+## 2.1 Primary Goals
+
+The MVP must:
+
+- Allow visitors to browse public problems without logging in.
+- Require Google authentication before users can interact.
+- Make publishing a problem possible in under 60 seconds when the user has their content ready.
+- Provide anonymous public identities by default.
+- Support five problem categories.
+- Allow users to select a city.
+- Include a basic discussion and upvoting system.
+- Display open and resolved statuses.
+- Include reporting and a basic moderation workflow from day one.
+- Provide an attractive, responsive interface.
+- Remain lightweight and inexpensive to operate.
+
+## 2.2 Success Metrics
+
+| Metric | Initial Target |
+|---|---|
+| Time to publish | Under 60 seconds |
+| Registration friction | Google sign-in without a separate password |
+| Posting completion | At least 70% of users who start posting complete it |
+| Duplicate votes | Prevented by database constraints |
+| Mobile usability | All core features work on smartphones |
+| Reporting | Every report enters a review workflow |
+| Core reliability | No critical failures in authentication, posting, or commenting |
+
+These are initial product targets, not existing performance results.
+
+---
+
+# 3. Target Audience
+
+## Primary Audience
+
+Indian users who want to share problems, discuss everyday challenges, or help others find solutions.
+
+## User Personas
+
+### Persona 1: The Local Citizen
+Wants to discuss problems affecting their neighborhood or city.
+
+### Persona 2: The Job Seeker
+Needs advice about finding employment, workplace problems, or career decisions.
+
+### Persona 3: The Consumer
+Wants to discuss defective products, refunds, or poor customer service.
+
+### Persona 4: The Person Seeking Advice
+Wants to discuss a personal challenge without displaying their real name.
+
+### Persona 5: The Community Helper
+Enjoys sharing knowledge and helping others solve practical problems.
+
+---
+
+# 4. Product Principles
+
+### 4.1 Anonymous by Default
+Public contributions display an automatically generated username rather than the user's real name.
+
+### 4.2 Browse Before Login
+Visitors can read public posts and comments without creating an account.
+
+### 4.3 One Primary Action
+The most prominent action should be **Share a Problem**.
+
+### 4.4 Simple Participation
+Users should not need to complete a lengthy profile or onboarding process.
+
+### 4.5 Useful Discussions
+Encourage constructive advice and practical solutions.
+
+### 4.6 Privacy and Safety
+Provide reporting, moderation, and clear guidance against sharing personal information.
+
+### 4.7 Lightweight Technology
+Use managed services and simple database queries instead of complex infrastructure.
+
+---
+
+# 5. Application Structure
+
+The MVP should include these pages:
+
+| Page | Purpose | Login Required |
+|---|---|---|
+| Home / Feed | Browse public problems | No |
+| Problem Details | Read a problem and comments | No |
+| Share a Problem | Submit a new problem | Yes |
+| My Posts | View your submitted problems | Yes |
+| Search and Filters | Find relevant discussions | No |
+| User Settings | Manage basic account settings | Yes |
+| Report Dialog | Report inappropriate content | Yes |
+| Admin Moderation | Review reports and moderate content | Admin only |
+
+Keep navigation simple. Do not create unnecessary pages for features outside the MVP.
+
+---
+
+# 6. User Journey
+
+## 6.1 First-Time Visitor
+
+1. Opens iTalk.
+2. Sees the public problem feed.
+3. Can browse posts and read comments.
+4. Sees the prominent Share a Problem button.
+5. Clicks the button.
+6. Sees a Google sign-in prompt.
+7. Signs in successfully.
+8. Returns to the post creation form.
+9. Submits a problem anonymously.
+
+Visitors should never be forced to register just to explore discussions.
+
+## 6.2 Google Authentication
+
+Use Google OAuth through Supabase Auth.
+
+Requirements:
+- One-click Google sign-in, subject to Google's authentication and consent flow.
+- No separate password creation.
+- No unnecessary registration questions.
+- Return users to the action they originally attempted.
+- Generate an anonymous username automatically.
+- Do not display the user's Google name, email, or profile image publicly by default.
+
+Example usernames:
+- QuietOwl284
+- OrangeRiver617
+- HelpfulTiger392
+
+These are illustrative examples.
+
+### Minimal Onboarding
+
+Use no more than two lightweight screens.
+
+**Screen 1 — Welcome**
+
+"Welcome to iTalk. A place to share problems and find people who understand."
+
+**Screen 2 — Choose Your City**
+
+Allow users to select a city or skip the step.
+
+Users can update their preferred city later.
+
+Do not request GPS access during onboarding.
+
+---
+
+# 7. Homepage and Feed
+
+## 7.1 Homepage Layout
+
+The homepage should have five main areas:
+
+1. Brand header.
+2. City selector.
+3. Prominent Share a Problem button.
+4. Feed navigation.
+5. Problem cards.
+
+### Header
+
+Display:
+- iTalk wordmark.
+- Search button.
+- City selector.
+- Sign-in button for visitors.
+
+On mobile, use compact navigation to preserve screen space.
+
+### Primary CTA
+
+**+ Share a Problem**
+
+This should be the most prominent action on the homepage.
+
+### Feed Tabs
+
+Include:
+
+- Nearby
+- Trending
+- My Posts
+
+My Posts requires authentication.
+
+A simple Latest feed may be provided as a fallback when the user has not selected a city or when insufficient data exists to calculate meaningful trends.
+
+## 7.2 Nearby Feed
+
+Displays approved problems associated with the selected city.
+
+Requirements:
+- Filter by city.
+- Allow users to change cities.
+- Provide an all-India feed.
+- Do not require GPS permissions.
+- Show a helpful empty state if no relevant posts exist.
+
+Implement city filtering using a normalized city field initially. Do not implement GPS-based distance calculations in the MVP.
+
+## 7.3 Trending Feed
+
+Sort posts using a simple combination of:
+- Recent upvotes.
+- Recent comments.
+- Post recency.
+
+Do not build a complex recommendation engine.
+
+Use real engagement data. Do not permanently hardcode posts into the trending feed.
+
+## 7.4 My Posts
+
+Display posts created by the authenticated user.
+
+Each entry should show:
+- Title.
+- City.
+- Category.
+- Creation date.
+- Status.
+- Comment count.
+
+Allow users to open their posts and manage their resolution status.
+
+## 7.5 Categories
+
+Provide these five categories:
+
+1. Civic
+2. Money
+3. Job
+4. Consumer
+5. Personal
+
+Use short labels and simple icons.
+
+Allow filtering by category.
+
+---
+
+# 8. Problem Cards
+
+Each card should display:
+
+- Problem title.
+- Short description.
+- City.
+- Category.
+- Anonymous username.
+- Relative timestamp.
+- Upvote count.
+- Comment count.
+- Open or Resolved badge.
+- Optional image thumbnail.
+
+### Example
+
+**Civic · Anantapur**
+
+**Why is garbage collection irregular in our area?**
+
+"Garbage has not been collected regularly in our neighborhood for several days. Has anyone found the right department to contact?"
+
+`Anonymous user · 2 hours ago`
+
+`↑ 24` · `8 comments`
+
+`Open`
+
+Use realistic spacing and a clear content hierarchy.
+
+The title should receive the most visual emphasis. Keep metadata and actions compact.
+
+Every card must have clear interaction boundaries so clicking an upvote or share button does not accidentally open the entire post.
+
+---
+
+# 9. Create a Problem
+
+## 9.1 Form Fields
+
+### Category
+Required.
+
+Options:
+- Civic
+- Money
+- Job
+- Consumer
+- Personal
+
+### City
+Required.
+
+Allow users to select a city or enter an unlisted city.
+
+### Title
+Required.
+
+Maximum length: 100 characters.
+
+Placeholder:
+
+"Describe your problem in one line"
+
+### Description
+Required.
+
+Suggested minimum: 20 characters.
+
+Maximum length: 3,000 characters.
+
+Placeholder:
+
+"Explain what's happening, what you've tried, and what kind of help you need."
+
+### Optional Image
+Allow one image in the MVP.
+
+Suggested maximum file size: 5 MB.
+
+Support JPEG, PNG, and WebP.
+
+Validate uploads securely.
+
+### Anonymous Identity
+Enabled by default.
+
+Display a clear privacy reminder:
+
+"Your public identity is anonymous. Avoid sharing passwords, account numbers, personal addresses, or private information about other people."
+
+### Submit Button
+
+**Post anonymously**
+
+Show:
+- Loading state.
+- Validation errors.
+- Success state.
+- Failure state.
+
+Prevent duplicate submissions.
+
+Do not erase the form if submission fails.
+
+## 9.2 Submission Flow
+
+1. User fills out the form.
+2. Frontend validates required fields.
+3. Backend verifies authentication.
+4. Backend validates the content and image.
+5. Moderation checks run.
+6. Approved posts become public.
+7. Posts requiring review enter a moderation queue.
+8. The user receives an accurate success or review-pending message.
+
+Do not tell users their post was published if it is still awaiting moderation.
+
+## 9.3 Success State
+
+**Your problem is out there.**
+
+"Your post is ready for the community."
+
+Buttons:
+- View My Problem
+- Back to Feed
+
+---
+
+# 10. Problem Details and Comments
+
+## 10.1 Problem Details Page
+
+Display:
+- Full title and description.
+- City and category.
+- Anonymous author.
+- Publication date.
+- Optional image.
+- Upvote action.
+- Comment action.
+- Share action.
+- Report action.
+- Resolution status.
+- Comments.
+
+Public posts and approved comments should be readable without login.
+
+## 10.2 Comments
+
+Authenticated users can:
+- Add comments.
+- Read existing comments.
+- Report inappropriate comments.
+
+Requirements:
+- Maximum comment length: 1,500 characters.
+- Anonymous display username.
+- Timestamp.
+- Input validation.
+- Rate limiting.
+- Basic moderation.
+
+Use a simple chronological comment list.
+
+Do not implement nested comment trees in the MVP.
+
+If no comments exist, display:
+
+"No advice yet. You could be the first to help."
+
+## 10.3 Upvotes
+
+Rules:
+- One active upvote per user per post.
+- Users can remove their upvote.
+- Guests can see vote counts but cannot vote.
+- Database constraints prevent duplicate votes.
+- Counts must reflect actual vote records.
+
+Do not implement downvotes initially.
+
+## 10.4 Sharing
+
+Every approved public post should have a permanent URL.
+
+Support:
+- Copy link.
+- Native device sharing where available.
+- Opening the post without requiring login.
+
+Never include private user information in the shared URL.
+
+---
+
+# 11. Resolution System
+
+The MVP should support two statuses.
+
+### Open
+The problem still needs help.
+
+### Resolved
+The author has indicated that the problem has been resolved.
+
+Rules:
+- Authors can mark their own posts as resolved.
+- Authors can reopen posts if necessary.
+- Other users cannot change the status.
+- Resolved posts remain readable.
+- Admins can remove content when required for moderation or privacy reasons.
+
+Display a green Resolved badge with a checkmark.
+
+Do not implement complex community verification in the first version.
+
+---
+
+# 12. Anonymous Identity and Privacy
+
+## 12.1 Public Identity
+
+Generate a consistent anonymous username for each account.
+
+Display that username on the user's posts and comments.
+
+Do not publicly display:
+- Real name.
+- Google email address.
+- Google profile photo.
+- Phone number.
+- Other unnecessary personal information.
+
+## 12.2 Internal Identity
+
+Store a stable internal user ID for authentication and authorization.
+
+This identifier is used to:
+- Associate posts and comments with their authors.
+- Prevent duplicate votes.
+- Enforce ownership permissions.
+- Manage account restrictions.
+- Allow users to manage their own content.
+
+Anonymity means the user's real identity is not displayed publicly by default. It does not mean the platform cannot associate contributions with an authenticated account.
+
+## 12.3 Privacy Requirements
+
+- Use secure authentication.
+- Never expose service-role credentials to the frontend.
+- Restrict database access with Row Level Security.
+- Prevent unauthorized access to private account information.
+- Provide an account deletion process.
+- Define how user-generated content is handled after account deletion.
+- Publish a privacy policy before public launch.
+
+---
+
+# 13. AI Moderation and Reporting
+
+Moderation must be present from day one.
+
+## 13.1 Content to Detect
+
+The moderation workflow should address:
+- Threats and targeted harassment.
+- Hate speech.
+- Spam and repetitive promotions.
+- Exposure of private information.
+- Scams and suspicious financial solicitation.
+- Abusive or otherwise prohibited content.
+
+Do not automatically suppress legitimate criticism, political discussion, civic complaints, or unpopular opinions simply because they are controversial.
+
+## 13.2 Moderation States
+
+Each post should have a moderation state:
+
+- Pending
+- Approved
+- Needs Review
+- Rejected
+
+Public feed queries must only return approved posts.
+
+Comments should receive equivalent moderation checks.
+
+## 13.3 AI Moderation
+
+Keep AI moderation simple and configurable.
+
+Recommended approach:
+1. Start with basic rule-based checks for obvious spam and prohibited content.
+2. Add an AI moderation API through a server-side function.
+3. Store moderation results and review status.
+4. Place ambiguous or high-risk content in a human review queue.
+5. Define a safe fallback if the moderation service fails.
+
+Do not assume any AI API is free or unlimited.
+
+Keep provider-specific code behind a small abstraction so the service can be changed later without rewriting the application.
+
+## 13.4 Report Button
+
+Include a Report option on every post and comment.
+
+Reasons:
+- Spam.
+- Harassment or hate.
+- Personal information exposure.
+- Fraud or scam.
+- Harmful content.
+- Other.
+
+After a report:
+- Save it securely.
+- Show a confirmation.
+- Limit repeated submissions.
+- Make the report available to authorized moderators.
+
+A report must not automatically delete a post solely because many people report it.
+
+## 13.5 Admin Moderation
+
+Create a minimal protected admin interface that supports:
+- Reviewing reports.
+- Opening reported content.
+- Dismissing reports.
+- Hiding or removing content.
+- Suspending abusive users.
+- Recording moderation reasons.
+
+Admin permissions must be enforced server-side or through database policies, not merely by hiding a page.
+
+---
+
+# 14. Search and Filtering
+
+Provide basic keyword search across:
+- Titles.
+- Descriptions.
+- Cities.
+- Categories.
+
+Filters:
+- City.
+- Category.
+- Feed type.
+- Resolution status, where useful.
+
+Return approved public content only.
+
+Do not add AI-powered semantic search or a separate search engine in the MVP.
+
+---
+
+# 15. Technical Architecture for Lovable
+
+## 15.1 Recommended Stack
+
+### Frontend
+- React.
+- TypeScript.
+- Vite.
+- Tailwind CSS.
+
+### Backend
+- Supabase PostgreSQL.
+- Supabase Auth.
+- Google OAuth.
+- Supabase Storage.
+- Supabase Edge Functions when server-side logic is required.
+
+### Development
+- Lovable for AI-assisted development.
+- GitHub integration for version control where available.
+
+### Hosting
+Use the simplest appropriate deployment option compatible with the project and budget.
+
+Check current free-tier limits before launch.
+
+## 15.2 Architecture Principles
+
+- Use managed services.
+- Keep the frontend lightweight.
+- Avoid unnecessary dependencies.
+- Avoid a custom authentication server.
+- Avoid microservices.
+- Avoid separate caching infrastructure until required.
+- Keep AI calls server-side.
+- Use database constraints for data integrity.
+- Implement database access policies from the beginning.
+
+The platform should not require a complicated backend to support the first version.
+
+---
+
+# 16. Database Schema
+
+Use a small relational schema.
+
+## Table 1: profiles
+
+Fields:
+- id: UUID, primary key referencing the authenticated user.
+- anonymous_username: text, unique.
+- preferred_city: text, nullable.
+- created_at: timestamp.
+
+## Table 2: posts
+
+Fields:
+- id: UUID, primary key.
+- author_id: UUID, references profiles.
+- title: text.
+- description: text.
+- category: text or enum.
+- city: text.
+- image_path: text, nullable.
+- status: open or resolved.
+- moderation_status: pending, approved, needs_review, or rejected.
+- created_at: timestamp.
+- updated_at: timestamp.
+
+## Table 3: comments
+
+Fields:
+- id: UUID, primary key.
+- post_id: UUID, references posts.
+- author_id: UUID, references profiles.
+- content: text.
+- moderation_status: text.
+- created_at: timestamp.
+
+## Table 4: votes
+
+Fields:
+- id: UUID, primary key.
+- post_id: UUID, references posts.
+- user_id: UUID, references profiles.
+- created_at: timestamp.
+
+Create a unique constraint on `(post_id, user_id)`.
+
+## Table 5: reports
+
+Fields:
+- id: UUID, primary key.
+- reporter_id: UUID, references profiles.
+- target_type: post or comment.
+- target_id: UUID.
+- reason: text.
+- details: text, nullable.
+- status: pending, reviewed, dismissed, or action_taken.
+- created_at: timestamp.
+- reviewed_at: timestamp, nullable.
+- reviewed_by: UUID, nullable.
+
+## Table 6: moderation_actions
+
+Fields:
+- id: UUID, primary key.
+- target_type: post, comment, or user.
+- target_id: UUID.
+- action: text.
+- reason: text.
+- moderator_id: UUID.
+- created_at: timestamp.
+
+## Database Requirements
+
+- Add foreign keys and useful indexes.
+- Enforce valid categories and status values.
+- Prevent duplicate votes.
+- Verify user ownership.
+- Restrict administrative operations.
+- Use transactions for multi-step operations.
+- Keep private report data inaccessible to ordinary users.
+- Never trust client-supplied author IDs or roles.
+
+Avoid adding tables that do not support an actual MVP feature.
+
+---
+
+# 17. UI/UX Design System
+
+## 17.1 Brand Colors
+
+The primary brand color is Orangered.
+
+| Color | Hex Code | Usage |
+|---|---|---|
+| Orangered | `#FF4500` | Primary buttons, active states, conversation accents |
+| Black | `#000000` | Main text and structural elements |
+| White | `#FFFFFF` | Backgrounds and cards |
+| Light Gray | `#F6F6F6` | Secondary backgrounds |
+| Border Gray | `#E5E5E5` | Card borders and dividers |
+| Secondary Text | `#666666` | Metadata and descriptions |
+| Success Green | `#21865B` | Resolved status |
+| Error Red | `#C62828` | Error messages and moderation warnings |
+
+Orangered should be the recognizable signature color.
+
+Use it strategically rather than making every component bright orange.
+
+## 17.2 Typography
+
+Use a clean, readable sans-serif font such as Inter.
+
+Maintain a consistent hierarchy:
+- Page headings: 24–32px.
+- Post titles: 17–20px.
+- Body text: 14–16px.
+- Metadata: 12–13px.
+
+## 17.3 Visual Style
+
+- White cards.
+- Light neutral backgrounds.
+- Thin borders.
+- Moderate rounded corners.
+- Clear spacing.
+- Minimal shadows.
+- Simple line icons.
+- Consistent hover and focus states.
+- Subtle, short transitions.
+
+Avoid unnecessary gradients, excessive animations, and complicated visual effects.
+
+## 17.4 Mobile-First Design
+
+The website must work comfortably on common Android smartphones.
+
+On mobile:
+- Use a single-column feed.
+- Provide compact top navigation.
+- Use a bottom navigation bar.
+- Make Create easy to reach.
+- Keep touch targets comfortable.
+- Prevent horizontal overflow.
+- Respect safe areas.
+- Ensure the keyboard does not obscure the post form.
+
+On desktop:
+- Use a centered content layout.
+- Add a compact left navigation sidebar if useful.
+- Keep the feed approximately 600–700px wide.
+- Use the remaining space for useful discovery components.
+
+---
+
+# 18. Performance and Reliability
+
+The MVP should remain lightweight.
+
+Requirements:
+- Paginate the feed.
+- Start with 10–20 posts per request.
+- Load images only when needed.
+- Compress uploaded images where appropriate.
+- Add indexes for commonly queried fields.
+- Avoid unnecessary background polling.
+- Use clear loading and error states.
+- Avoid fetching private account information for public feeds.
+- Avoid unnecessary animation libraries.
+
+Ensure the platform remains usable on slower mobile connections.
+
+Do not promise a specific loading time until it has been measured in the deployed application.
+
+---
+
+# 19. Free-Plan Constraints
+
+Build the MVP to minimize unnecessary use of Lovable credits and backend resources.
+
+## Development Rules
+
+- Use a small number of dependencies.
+- Reuse components.
+- Avoid rewriting working code.
+- Work on one major feature at a time.
+- Avoid complex AI agents.
+- Use mock data only during initial UI development.
+- Connect the real database once the basic interface works.
+- Keep AI moderation configurable.
+- Avoid unnecessary external APIs.
+- Monitor database, image storage, bandwidth, and API usage.
+
+Remember that Lovable's development plan and the application's production infrastructure have separate usage limits.
+
+Before launch, verify the current free-plan restrictions for Lovable, Supabase, and any hosting or AI provider you choose.
+
+The application must display honest errors if a service limit is reached rather than pretending that operations succeeded.
+
+---
+
+# 20. Development Roadmap
+
+Build in the following order.
+
+## Phase 1: UI Prototype
+
+Build:
+- Homepage.
+- Header.
+- Feed tabs.
+- Category filters.
+- Problem cards.
+- Mobile navigation.
+- Share a Problem form.
+- Problem details page.
+- Comments layout.
+- Authentication modal.
+
+Use mock data initially.
+
+**Deliverable:** A polished responsive interface.
+
+## Phase 2: Authentication and Database
+
+Implement:
+- Supabase configuration.
+- Google OAuth.
+- Profiles.
+- Anonymous usernames.
+- Database access policies.
+- Authenticated route handling.
+
+**Deliverable:** Users can sign in and participate using anonymous public identities.
+
+## Phase 3: Core Community Features
+
+Implement:
+- Create a post.
+- View public posts.
+- Filter by city and category.
+- Comment.
+- Upvote.
+- My Posts.
+- Share links.
+- Mark posts as resolved.
+
+**Deliverable:** The core problem-sharing experience works end to end.
+
+## Phase 4: Moderation
+
+Implement:
+- Report button.
+- Report database.
+- Admin review interface.
+- Basic content checks.
+- Optional AI moderation.
+- Account restrictions.
+
+**Deliverable:** The application has a usable moderation workflow.
+
+## Phase 5: Testing and Deployment
+
+Test:
+- Authentication.
+- Posting.
+- Commenting.
+- Duplicate votes.
+- Unauthorized access.
+- Image uploads.
+- Mobile responsiveness.
+- Moderation failures.
+- Empty states.
+- Network errors.
+
+Deploy the application only after the core flows and database policies have been tested.
+
+---
+
+# 21. Features to Exclude From the First Version
+
+Do not build these yet:
+
+- Direct messages.
+- Followers and following.
+- Nested comments.
+- Complex user reputation systems.
+- Badges and achievements.
+- Native mobile applications.
+- Video uploads.
+- Live chat.
+- Paid subscriptions.
+- Advertising systems.
+- AI-generated responses to every post.
+- Complex recommendation algorithms.
+- GPS tracking.
+- Multiple authentication providers.
+- Microservices.
+- Community subgroups.
+
+Add future features only when actual usage demonstrates a need.
+
+---
+
+# 22. MVP Acceptance Criteria
+
+The first version is complete when:
+
+### Browsing
+- Visitors can browse approved public posts without signing in.
+- Visitors can read comments.
+- City and category filters work.
+
+### Authentication
+- Google sign-in works.
+- Anonymous usernames are generated automatically.
+- Public content does not expose real names or emails.
+- Users return to their intended action after signing in.
+
+### Posting
+- Authenticated users can create valid posts.
+- Required fields are validated.
+- Optional image uploads work securely.
+- Posts appear after approval.
+- Users can find their own posts.
+
+### Community
+- Users can comment.
+- Users can upvote.
+- Duplicate votes are prevented.
+- Authors can mark their own posts as resolved.
+- Users cannot modify other people's content.
+
+### Moderation
+- Users can report posts and comments.
+- Reports enter the moderation queue.
+- Unauthorized users cannot access the admin interface.
+- Unapproved content is not publicly exposed.
+
+### Responsive Design
+- The interface works on mobile and desktop.
+- Forms remain usable with the mobile keyboard open.
+- Navigation does not cover content.
+- Loading, empty, success, and error states are handled.
+
+---
+
+# 23. Final Product Definition
+
+iTalk is a lightweight, anonymous, community-powered platform where Indians can share problems and help one another find solutions.
+
+The MVP must focus on one primary loop:
+
+**Discover a problem → Sign in → Share or comment → Receive useful advice → Resolve the problem.**
+
+The platform should be simple enough to build with Lovable's free plan, yet structured well enough to grow into a larger community product.
+
+The first release should prioritize:
+1. A polished mobile-first feed.
+2. Anonymous Google-authenticated posting.
+3. Comments and upvotes.
+4. City and category filtering.
+5. Resolution status.
+6. Reporting and moderation.
+7. Secure database access.
+
+Build the smallest reliable version that delivers this experience. Validate it with real users before expanding the feature set.
